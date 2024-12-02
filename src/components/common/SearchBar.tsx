@@ -1,5 +1,16 @@
 import { useRef } from "react";
-import Button from "./common/Button";
+import Button from "./Button";
+import styled from "styled-components";
+
+const StyledSearchBar = styled.div`
+  display: flex;
+  max-width: 400px;
+  gap: 0.5rem;
+
+  input {
+    flex: 1;
+  }
+`;
 
 export default function SearchBar({
   searchText,
@@ -11,15 +22,15 @@ export default function SearchBar({
   const inputRef = useRef(null);
 
   return (
-    <div>
+    <StyledSearchBar>
       <input
         ref={inputRef}
         type="text"
-        placeholder="Search..."
+        placeholder="Movie name..."
         value={searchText}
         onChange={(e) => onSearchTextChange(e.target.value)}
       />
       <Button>Search</Button>
-    </div>
+    </StyledSearchBar>
   );
 }
