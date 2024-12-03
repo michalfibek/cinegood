@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import Button from "./Button";
+// import Button from "./Button";
 import styled from "styled-components";
 
 const StyledSearchBar = styled.div`
@@ -30,7 +30,7 @@ export default function SearchBar({
         value={searchText}
         onChange={(e) => onSearchTextChange(e.target.value)}
       />
-      <Button>Search</Button>
+      {/* <Button>Search</Button> */}
     </StyledSearchBar>
   );
 }

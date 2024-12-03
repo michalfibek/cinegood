@@ -3,5 +3,7 @@ export type TMovie = {
   title: string;
   year: number;
   runtime: number;
-  // director: string | undefined;
+  director: string | undefined;
+  poster: string | undefined;
+  type: string;
 };

@@ -1,8 +1,31 @@
-export default function MovieList({ children }: { children: React.ReactNode }) {
+import styled from "styled-components";
+
+const StyledMovieList = styled.div<{ loading: number }>`
+  /* margin: 4rem 0 0;
+  position: relative; */
+  transition: opacity 0.2s;
+  opacity: ${({ loading }) => (loading ? 0.2 : 1)};
+`;
+
+const MovieListing = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem 2rem;
+`;
+
+export default function MovieList({
+  count,
+  children,
+  loading = false,
+}: {
+  count: number;
+  children: React.ReactNode;
+  loading: boolean;
+}) {
   return (
-    <div>
-      <h2>Found movies</h2>
-      {children}
-    </div>
+    <StyledMovieList loading={loading ? 1 : 0}>
+      <h2>Found {count} results</h2>
+      <MovieListing>{children}</MovieListing>
+    </StyledMovieList>
   );
 }

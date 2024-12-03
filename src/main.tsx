@@ -4,6 +4,12 @@ import App from "./App.tsx";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 :root {
   font-family: "Quicksand", system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-optical-sizing: auto;
