@@ -5,15 +5,19 @@ import { TFetchedMovie } from "../types/fetchedMovie";
 const API_URL = "https://www.omdbapi.com/";
 const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
-export function useFetchMovies(searchText: string): {
+export function useFetchMovies(
+  searchText: string,
+  page: number,
+): {
   movies: TMovie[];
+  totalResults: number;
   loading: boolean;
   error: string;
 } {
   const [movies, setMovies] = useState([]);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [totalResults, setTotalResults] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -26,11 +30,17 @@ export function useFetchMovies(searchText: string): {
       searchText?.length < import.meta.env.VITE_MIN_SEARCH_LENGTH && setMovies([]);
 
       try {
-        const response = await fetch(`${API_URL}?s=${searchText}&apikey=${API_KEY}`, { signal });
+        const response = await fetch(`${API_URL}?s=${searchText}&page=${page}&apikey=${API_KEY}`, {
+          signal,
+        });
+
         if (!response.ok) throw new Error("Error fetching the movie");
         const data = await response.json();
+        console.log("data", data);
 
-        if (data.Response === "False") throw new Error(data.Error);
+        if (data.Response === "False") throw new Error("Movie not found");
+
+        setTotalResults(data.totalResults);
 
         setMovies(
           data.Search.map((m: TFetchedMovie) => ({
@@ -58,7 +68,7 @@ export function useFetchMovies(searchText: string): {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [searchText]);
+  }, [searchText, page]);
 
-  return { movies, loading, error };
+  return { movies, totalResults, loading, error };
 }

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-const StyledMovieList = styled.div<{ loading: number }>`
+const StyledMovieList = styled.div<{ $loading: boolean }>`
   /* margin: 4rem 0 0;
   position: relative; */
   transition: opacity 0.2s;
-  opacity: ${({ loading }) => (loading ? 0.2 : 1)};
+  opacity: ${({ $loading }) => ($loading ? 0.2 : 1)};
 `;
 
 const MovieListing = styled.div`
@@ -23,7 +23,7 @@ export default function MovieList({
   loading: boolean;
 }) {
   return (
-    <StyledMovieList loading={loading ? 1 : 0}>
+    <StyledMovieList $loading={loading}>
       <h2>Found {count} results</h2>
       <MovieListing>{children}</MovieListing>
     </StyledMovieList>

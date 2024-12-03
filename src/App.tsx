@@ -1,15 +1,23 @@
 import { useState } from "react";
 import styled from "styled-components";
+
+// basic layout
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
-import MovieItem from "./components/movie/MovieItem";
-import MovieList from "./components/movie/MovieList";
-import SearchBar from "./components/common/SearchBar";
-import { TMovie } from "./types/movie";
-import MovieDetail from "./components/movie/MovieDetail";
-import { useFetchMovies } from "./hooks/useFetchMovies";
+
+// common
 import Loader from "./components/common/Loader";
 import Overlay from "./components/common/Overlay";
+import Paginator from "./components/common/Paginator";
+import SearchBar from "./components/common/SearchBar";
+
+// movie related
+import MovieItem from "./components/movie/MovieItem";
+import MovieList from "./components/movie/MovieList";
+import MovieDetail from "./components/movie/MovieDetail";
+
+// hooks
+import { useFetchMovies } from "./hooks/useFetchMovies";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -31,15 +39,23 @@ const ResultsContainer = styled.div`
   position: relative;
 `;
 
+const itemsPerPage = 10;
+
 function App() {
   // const [movies, setMovies] = useState<TMovie[]>([]);
   const [searchText, setSearchText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedMovieId, setSelectedMovieId] = useState(null);
 
-  const { movies, error, loading } = useFetchMovies(searchText);
+  const { movies, totalResults, error, loading } = useFetchMovies(searchText, currentPage);
 
   function handleSearchTextChange(text: string) {
     setSearchText(text);
+    setCurrentPage(1);
+  }
+
+  function handlePageChange(pageNumber: number) {
+    setCurrentPage(pageNumber);
   }
 
   return (
@@ -50,17 +66,25 @@ function App() {
           <SearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
           {/* {selectedMovieId && <MovieDetail movie={mockMovies[0]} />} */}
           <ResultsContainer>
-            {searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
+            {error.length > 0 && <h2>{error}</h2>}
+
+            {!(error.length > 0) && searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
               <>
-                {loading && (
+                {loading && !error.length && (
                   <Overlay>
                     <Loader>Loading movies...</Loader>
                   </Overlay>
                 )}
-                <MovieList count={movies.length} loading={loading}>
+                <MovieList count={totalResults} loading={loading}>
                   {movies?.length > 0 &&
                     movies.map((movie) => <MovieItem key={movie.imdbID} movie={movie} />)}
                 </MovieList>
+                <Paginator
+                  totalCount={totalResults}
+                  currentPage={currentPage}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+                />
               </>
             )}
           </ResultsContainer>

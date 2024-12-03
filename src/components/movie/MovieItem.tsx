@@ -9,7 +9,7 @@ const StyledMovieItem = styled.div`
     width: auto;
     height: 5rem;
     border-radius: 0.25rem;
-    transition: transform 0.2 s;
+    transition: transform 0.2s;
   }
 
   > a {

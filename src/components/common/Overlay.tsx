@@ -5,7 +5,7 @@ type OverlayProps = {
   children: React.ReactNode;
 };
 
-const OverlayContainer = styled.div<{ bgColor: string }>`
+const OverlayContainer = styled.div<{ $bgColor: string }>`
   display: block;
   width: 100%;
   height: 100%;
@@ -20,7 +20,7 @@ const OverlayContainer = styled.div<{ bgColor: string }>`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: ${({ bgColor }) => bgColor || "none"};
+    background-color: ${({ $bgColor }) => $bgColor || "none"};
   }
 `;
 
@@ -36,7 +36,7 @@ const OverlayContent = styled.div`
 
 export default function Overlay({ bgColor = "", children }: OverlayProps) {
   return (
-    <OverlayContainer bgColor={bgColor}>
+    <OverlayContainer $bgColor={bgColor}>
       <OverlayContent>{children}</OverlayContent>
     </OverlayContainer>
   );
