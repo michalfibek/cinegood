@@ -1,6 +1,6 @@
 /* Paginator helper function */
 export function getVisiblePages(pageCount: number, currentPage: number) {
-  const delta = 2;
+  const delta = 1;
   const range = [];
 
   for (

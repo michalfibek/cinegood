@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
 
 // basic layout
@@ -42,10 +42,9 @@ const ResultsContainer = styled.div`
 const itemsPerPage = 10;
 
 function App() {
-  // const [movies, setMovies] = useState<TMovie[]>([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<null | string>(null);
 
   const { movies, totalResults, error, loading } = useFetchMovies(searchText, currentPage);
 
@@ -58,6 +57,27 @@ function App() {
     setCurrentPage(pageNumber);
   }
 
+  function handleMovieSelect(movieId: string) {
+    setSelectedMovieId(movieId);
+  }
+
+  const movieItems = useMemo(
+    () => movies.map((movie) => <MovieItem key={movie.imdbID} movie={movie} />),
+    [movies],
+  );
+
+  const memoizedPaginator = useMemo(
+    () => (
+      <Paginator
+        totalCount={totalResults}
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+      />
+    ),
+    [totalResults, currentPage],
+  );
+
   return (
     <>
       <AppContainer>
@@ -66,25 +86,25 @@ function App() {
           <SearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
           {/* {selectedMovieId && <MovieDetail movie={mockMovies[0]} />} */}
           <ResultsContainer>
-            {error.length > 0 && <h2>{error}</h2>}
+            {error.length > 0 && searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
+              <h2>{error}</h2>
+            )}
 
-            {!(error.length > 0) && searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
+            {searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
               <>
                 {loading && !error.length && (
                   <Overlay>
                     <Loader>Loading movies...</Loader>
                   </Overlay>
                 )}
-                <MovieList count={totalResults} loading={loading}>
-                  {movies?.length > 0 &&
-                    movies.map((movie) => <MovieItem key={movie.imdbID} movie={movie} />)}
-                </MovieList>
-                <Paginator
-                  totalCount={totalResults}
-                  currentPage={currentPage}
-                  itemsPerPage={itemsPerPage}
-                  onPageChange={handlePageChange}
-                />
+                {movies?.length > 0 && (
+                  <>
+                    <MovieList count={totalResults} loading={loading}>
+                      {movieItems}
+                    </MovieList>
+                    {memoizedPaginator}
+                  </>
+                )}
               </>
             )}
           </ResultsContainer>

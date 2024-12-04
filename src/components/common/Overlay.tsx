@@ -4,6 +4,7 @@ import styled from "styled-components";
 type OverlayProps = {
   bgColor?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 };
 
 const OverlayContainer = styled.div<{ $bgColor: string }>`
@@ -13,6 +14,7 @@ const OverlayContainer = styled.div<{ $bgColor: string }>`
   position: absolute;
   overflow: hidden;
   z-index: 10;
+  pointer-events: none;
 
   &:before {
     content: "";
@@ -21,7 +23,7 @@ const OverlayContainer = styled.div<{ $bgColor: string }>`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: ${({ $bgColor }) => $bgColor || "none"};
+    background: ${({ $bgColor }) => $bgColor || "none"};
   }
 `;
 
@@ -33,6 +35,7 @@ const OverlayContent = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 `;
 
 export default function Overlay({ bgColor = "", children }: OverlayProps) {

@@ -1,5 +1,5 @@
 export type TFetchedMovie = {
-  ImdbID: string;
+  imdbID: string;
   Title: string;
   Year: string;
   Runtime: string;

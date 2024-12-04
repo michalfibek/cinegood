@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TMovie } from "../types/movie";
 import { TFetchedMovie } from "../types/fetchedMovie";
 
@@ -21,43 +21,46 @@ export function useFetchMovies(
 
   useEffect(() => {
     const controller = new AbortController();
+
     async function fetchMovies() {
-      const signal = controller.signal;
-
-      setLoading(true);
-      setError("");
-
-      if (searchText?.length < import.meta.env.VITE_MIN_SEARCH_LENGTH) setMovies([]);
-
       try {
+        setError("");
+        setLoading(true);
         const response = await fetch(`${API_URL}?s=${searchText}&page=${page}&apikey=${API_KEY}`, {
-          signal,
+          signal: controller.signal,
         });
 
         if (!response.ok) throw new Error("Error fetching the movie");
         const data = await response.json();
-        console.log("data", data);
 
         if (data.Response === "False") throw new Error("Movie not found");
+        console.log("data", data.Search);
 
         setTotalResults(data.totalResults);
 
         setMovies(
           data.Search.map((m: TFetchedMovie) => ({
-            imdbId: m.ImdbID,
+            imdbID: m.imdbID,
             title: m.Title,
             year: parseInt(m.Year.split(" min")[0]),
-            runtime: parseInt(m.Runtime),
-            director: m.Director,
             poster: m.Poster,
             type: m.Type,
+            // runtime: parseInt(m.Runtime),
+            // director: m.Director,
           })),
         );
       } catch (err) {
         setError((err as Error).message);
         return;
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
+    }
+
+    if (searchText?.length < import.meta.env.VITE_MIN_SEARCH_LENGTH) {
+      setMovies([]);
+      setError("");
+      return;
     }
 
     const timer = setTimeout(() => {
@@ -70,5 +73,11 @@ export function useFetchMovies(
     };
   }, [searchText, page]);
 
-  return { movies, totalResults, loading, error };
+  const result = useMemo(
+    () => ({ movies, totalResults, loading, error }),
+    [movies, totalResults, loading, error],
+  );
+  return result;
+
+  // return { movies, totalResults, loading, error };
 }

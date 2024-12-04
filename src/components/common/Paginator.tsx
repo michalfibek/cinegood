@@ -27,7 +27,7 @@ const PaginatorLink = styled.a<{ $active: number }>`
   min-width: 2.5rem;
   text-align: center;
   border-radius: 1rem;
-  color: ${({ $active }) => ($active ? "#4c5958" : "#7ea19e")};
+  color: ${({ $active }) => ($active ? "#000000" : "#7ea19e")};
   background-color: ${({ $active }) => ($active ? "#7ea19e" : "#4c5958")};
 `;
 
