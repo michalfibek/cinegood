@@ -18,6 +18,7 @@ import MovieDetail from "./components/movie/MovieDetail";
 
 // hooks
 import { useFetchMovies } from "./hooks/useFetchMovies";
+import useDebounce from "./hooks/useDebounce";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -46,7 +47,9 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedMovieId, setSelectedMovieId] = useState<null | string>(null);
 
-  const { movies, totalResults, error, loading } = useFetchMovies(searchText, currentPage);
+  const debouncedSearchText = useDebounce(searchText, 500);
+
+  const { movies, totalResults, error, loading } = useFetchMovies(debouncedSearchText, currentPage);
 
   function handleSearchTextChange(text: string) {
     setSearchText(text);

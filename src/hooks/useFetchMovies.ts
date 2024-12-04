@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TMovie } from "../types/movie";
 import { TFetchedMovie } from "../types/fetchedMovie";
 
@@ -14,15 +14,25 @@ export function useFetchMovies(
   loading: boolean;
   error: string;
 } {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<TMovie[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [totalResults, setTotalResults] = useState(0);
 
+  const cache = useRef<{ [key: string]: { movies: TMovie[]; totalResults: number } }>({});
+
   useEffect(() => {
     const controller = new AbortController();
+    const cacheKey = `${searchText}-${page}`;
 
     async function fetchMovies() {
+      if (cache.current[cacheKey]) {
+        const cachedData = cache.current[cacheKey];
+        setMovies(cachedData.movies);
+        setTotalResults(cachedData.totalResults);
+        return;
+      }
+
       try {
         setError("");
         setLoading(true);
@@ -36,19 +46,23 @@ export function useFetchMovies(
         if (data.Response === "False") throw new Error("Movie not found");
         // console.log("data", data.Search);
 
-        setTotalResults(data.totalResults);
+        const fetchedMovies = data.Search.map((m: TFetchedMovie) => ({
+          imdbID: m.imdbID,
+          title: m.Title,
+          year: parseInt(m.Year.split(" min")[0]),
+          poster: m.Poster,
+          type: m.Type,
+          // runtime: parseInt(m.Runtime),
+          // director: m.Director,
+        }));
 
-        setMovies(
-          data.Search.map((m: TFetchedMovie) => ({
-            imdbID: m.imdbID,
-            title: m.Title,
-            year: parseInt(m.Year.split(" min")[0]),
-            poster: m.Poster,
-            type: m.Type,
-            // runtime: parseInt(m.Runtime),
-            // director: m.Director,
-          })),
-        );
+        setTotalResults(parseInt(data.totalResults));
+        setMovies(fetchedMovies);
+
+        cache.current[cacheKey] = {
+          movies: fetchedMovies,
+          totalResults: parseInt(data.totalResults),
+        };
       } catch (err) {
         setError((err as Error).message);
         return;
@@ -63,13 +77,10 @@ export function useFetchMovies(
       return;
     }
 
-    const timer = setTimeout(() => {
-      fetchMovies();
-    }, 500);
+    fetchMovies();
 
     return () => {
       controller.abort();
-      clearTimeout(timer);
     };
   }, [searchText, page]);
 
