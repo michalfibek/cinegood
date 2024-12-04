@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { TMovie } from "../types/movie";
 import { TFetchedMovie } from "../types/fetchedMovie";
 
@@ -34,7 +34,7 @@ export function useFetchMovies(
         const data = await response.json();
 
         if (data.Response === "False") throw new Error("Movie not found");
-        console.log("data", data.Search);
+        // console.log("data", data.Search);
 
         setTotalResults(data.totalResults);
 
@@ -73,11 +73,5 @@ export function useFetchMovies(
     };
   }, [searchText, page]);
 
-  const result = useMemo(
-    () => ({ movies, totalResults, loading, error }),
-    [movies, totalResults, loading, error],
-  );
-  return result;
-
-  // return { movies, totalResults, loading, error };
+  return { movies, totalResults, loading, error };
 }
