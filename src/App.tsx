@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 // basic layout
@@ -19,6 +19,7 @@ import MovieList from "./components/movie/MovieList";
 // hooks
 import { useFetchMovies } from "./hooks/useFetchMovies";
 import useDebounce from "./hooks/useDebounce";
+import { useSearchParams } from "react-router";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -53,8 +54,14 @@ const ErrorMessage = styled.div`
 const itemsPerPage = 10;
 
 function App() {
-  const [searchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialSearchText = searchParams.get("q") || "";
+  const pageParam = searchParams.get("p");
+  const initialPage = pageParam ? parseInt(pageParam) : 1;
+
+  const [searchText, setSearchText] = useState(initialSearchText);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   // const [selectedMovieId, setSelectedMovieId] = useState<null | string>(null);
 
   const debouncedSearchText = useDebounce(searchText, 500);
@@ -64,11 +71,31 @@ function App() {
   function handleSearchTextChange(text: string) {
     setSearchText(text);
     setCurrentPage(1);
+    setSearchParams({ q: text });
   }
 
   function handlePageChange(pageNumber: number) {
     setCurrentPage(pageNumber);
+    if (pageNumber == 1) {
+      setSearchParams({ q: searchText });
+    } else {
+      setSearchParams({ q: searchText, p: pageNumber.toString() });
+    }
   }
+
+  // useEffect(() => {
+  //   const textParam = searchParams.get("q");
+  //   const pageParam = searchParams.get("p");
+  //   if (textParam !== null && textParam !== searchText) {
+  //     setSearchText(textParam);
+  //   }
+
+  //   const pageNumber = pageParam !== null ? parseInt(pageParam) : 1;
+
+  //   if (pageNumber !== currentPage) {
+  //     setCurrentPage(pageNumber);
+  //   }
+  // }, []);
 
   // function handleMovieSelect(movieId: string) {
   //   setSelectedMovieId(movieId);
