@@ -1,4 +1,4 @@
-import { TMovie } from '../../types/movie';
+import { TMovie } from "../../types/TMovie";
 
 export default function MovieDetail({ movie }: { movie: TMovie }) {
   return (

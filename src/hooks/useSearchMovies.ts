@@ -1,25 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import { TMovie } from "../types/movie";
-import { TFetchedMovie } from "../types/fetchedMovie";
+import { TBasicMovie } from "../types/TBasicMovie";
+import { TBasicMovieRaw } from "../types/TBasicMovieRaw";
+import { parseBasicMovieData } from "../utility/parseBasicMovieData";
 
 const API_URL = "https://www.omdbapi.com/";
 const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
-export function useFetchMovies(
+export function useSearchMovies(
   searchText: string,
   page: number,
 ): {
-  movies: TMovie[];
+  movies: TBasicMovie[];
   totalResults: number;
   loading: boolean;
   error: string;
 } {
-  const [movies, setMovies] = useState<TMovie[]>([]);
+  const [movies, setMovies] = useState<TBasicMovie[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [totalResults, setTotalResults] = useState(0);
 
-  const cache = useRef<{ [key: string]: { movies: TMovie[]; totalResults: number } }>({});
+  const cache = useRef<{ [key: string]: { movies: TBasicMovie[]; totalResults: number } }>({});
 
   useEffect(() => {
     const controller = new AbortController();
@@ -53,15 +54,9 @@ export function useFetchMovies(
         }
         // console.log("data", data.Search);
 
-        const fetchedMovies = data.Search.map((m: TFetchedMovie) => ({
-          imdbID: m.imdbID,
-          title: m.Title,
-          year: parseInt(m.Year.split(" min")[0]),
-          poster: m.Poster,
-          type: m.Type,
-          // runtime: parseInt(m.Runtime),
-          // director: m.Director,
-        }));
+        const fetchedMovies = data.Search.map((movieData: TBasicMovieRaw) =>
+          parseBasicMovieData(movieData),
+        );
 
         setTotalResults(parseInt(data.totalResults));
 

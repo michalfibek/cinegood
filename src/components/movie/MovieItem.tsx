@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { TMovie } from "../../types/movie";
 import { Img } from "../common/Img";
+import { Link } from "react-router";
+import { TBasicMovie } from "../../types/TBasicMovie";
 
 const StyledMovieItem = styled.div`
   line-height: 1.2;
@@ -72,11 +73,10 @@ const MovieType = styled.span`
 
 const MovieYear = styled.time``;
 
-export default function MovieItem({ movie }: { movie: TMovie }) {
-  const url = "#";
+export default function MovieItem({ movie }: { movie: TBasicMovie }) {
   return (
     <StyledMovieItem>
-      <a href={url}>
+      <Link to={`/movie/${movie.imdbID}`}>
         <ImageContainer>
           <Img src={movie.poster} alt={movie.title} fallback={<FallbackImg />} />
         </ImageContainer>
@@ -87,7 +87,7 @@ export default function MovieItem({ movie }: { movie: TMovie }) {
             <MovieYear dateTime={movie.year.toString()}>{movie.year}</MovieYear>
           </MovieMeta>
         </MovieHeader>
-      </a>
+      </Link>
     </StyledMovieItem>
   );
 }
