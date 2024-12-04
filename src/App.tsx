@@ -134,7 +134,7 @@ function App() {
                     <Loader>Loading movies...</Loader>
                   </Overlay>
                 )}
-                {movies?.length > 0 && (
+                {searchText == debouncedSearchText && movies?.length > 0 && (
                   <>
                     <ResultsCount>{totalResults} results</ResultsCount>
                     {memoizedPaginator}
