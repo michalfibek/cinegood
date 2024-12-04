@@ -1,4 +1,4 @@
-import { HTMLProps, useState } from "react";
+import React, { HTMLProps, useState } from "react";
 
 type ImgProps = HTMLProps<HTMLImageElement> & {
   fallback?: React.ReactNode;

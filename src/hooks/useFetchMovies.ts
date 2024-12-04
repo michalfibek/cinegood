@@ -27,7 +27,7 @@ export function useFetchMovies(
       setLoading(true);
       setError("");
 
-      searchText?.length < import.meta.env.VITE_MIN_SEARCH_LENGTH && setMovies([]);
+      if (searchText?.length < import.meta.env.VITE_MIN_SEARCH_LENGTH) setMovies([]);
 
       try {
         const response = await fetch(`${API_URL}?s=${searchText}&page=${page}&apikey=${API_KEY}`, {
