@@ -11,7 +11,9 @@ const OverlayContainer = styled.div<{ $bgColor: string }>`
   display: block;
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   overflow: hidden;
   z-index: 10;
   pointer-events: none;
