@@ -14,7 +14,7 @@ import SearchBar from "./components/common/SearchBar";
 // movie related
 import MovieItem from "./components/movie/MovieItem";
 import MovieList from "./components/movie/MovieList";
-import MovieDetail from "./components/movie/MovieDetail";
+// import MovieDetail from "./components/movie/MovieDetail";
 
 // hooks
 import { useFetchMovies } from "./hooks/useFetchMovies";
@@ -55,7 +55,7 @@ const itemsPerPage = 10;
 function App() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedMovieId, setSelectedMovieId] = useState<null | string>(null);
+  // const [selectedMovieId, setSelectedMovieId] = useState<null | string>(null);
 
   const debouncedSearchText = useDebounce(searchText, 500);
 
@@ -70,9 +70,9 @@ function App() {
     setCurrentPage(pageNumber);
   }
 
-  function handleMovieSelect(movieId: string) {
-    setSelectedMovieId(movieId);
-  }
+  // function handleMovieSelect(movieId: string) {
+  //   setSelectedMovieId(movieId);
+  // }
 
   const movieItems = useMemo(
     () => movies.map((movie) => <MovieItem key={movie.imdbID} movie={movie} />),
@@ -92,6 +92,14 @@ function App() {
       />
     );
   }, [totalResults, currentPage]);
+
+  if (import.meta.env.VITE_OMDB_API_KEY === undefined) {
+    return (
+      <ErrorMessage>
+        Please enter your OMDB API key into the configuration file to start using this app.
+      </ErrorMessage>
+    );
+  }
 
   return (
     <>
@@ -117,9 +125,7 @@ function App() {
                   <>
                     <ResultsCount>{totalResults} results</ResultsCount>
                     {memoizedPaginator}
-                    <MovieList count={totalResults} loading={loading}>
-                      {movieItems}
-                    </MovieList>
+                    <MovieList loading={loading}>{movieItems}</MovieList>
                     {memoizedPaginator}
                   </>
                 )}

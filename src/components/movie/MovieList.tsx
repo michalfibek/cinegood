@@ -13,11 +13,9 @@ const MovieListing = styled.div`
 `;
 
 export default function MovieList({
-  count,
   children,
   loading = false,
 }: {
-  count: number;
   children: React.ReactNode;
   loading: boolean;
 }) {

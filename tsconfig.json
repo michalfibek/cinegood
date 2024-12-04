@@ -6,6 +6,7 @@
     "paths": {
       "@types/*": ["types/*"],
       "@components/*": ["components/*"]
-    }
+    },
+    "noUnusedLocals": false
   }
 }
