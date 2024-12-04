@@ -9,11 +9,6 @@ const PaginatorContainer = styled.div`
   margin: 2rem 0;
 `;
 
-const PaginatorItemCount = styled.div`
-  display: block;
-  margin: 2rem 1rem;
-`;
-
 const PaginatorList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -54,9 +49,6 @@ export default function Paginator({
 
   return (
     <PaginatorContainer>
-      <PaginatorItemCount>
-        Page {currentPage} from {pageCount}
-      </PaginatorItemCount>
       <PaginatorList>
         {getVisiblePages(pageCount, currentPage).map((pageNumber, index) => {
           if (pageNumber === "...") {

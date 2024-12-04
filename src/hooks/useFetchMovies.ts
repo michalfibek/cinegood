@@ -43,7 +43,14 @@ export function useFetchMovies(
         if (!response.ok) throw new Error("Error fetching the movie");
         const data = await response.json();
 
-        if (data.Response === "False") throw new Error("Movie not found");
+        if (data.Response === "False") {
+          setMovies([]);
+          cache.current[cacheKey] = {
+            movies: [],
+            totalResults: 0,
+          };
+          throw new Error("No movie found");
+        }
         // console.log("data", data.Search);
 
         const fetchedMovies = data.Search.map((m: TFetchedMovie) => ({
@@ -57,20 +64,22 @@ export function useFetchMovies(
         }));
 
         setTotalResults(parseInt(data.totalResults));
-        setMovies(fetchedMovies);
 
+        setMovies(fetchedMovies);
         cache.current[cacheKey] = {
           movies: fetchedMovies,
           totalResults: parseInt(data.totalResults),
         };
+
+        setError("");
       } catch (err) {
-        setError((err as Error).message);
-        return;
+        if (err instanceof Error && err.name !== "AbortError") {
+          setError(err.message);
+        }
       } finally {
         setLoading(false);
       }
     }
-
     if (searchText?.length < import.meta.env.VITE_MIN_SEARCH_LENGTH) {
       setMovies([]);
       setError("");

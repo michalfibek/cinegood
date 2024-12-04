@@ -1,6 +1,9 @@
 /* Paginator helper function */
-export function getVisiblePages(pageCount: number, currentPage: number) {
-  const delta = 1;
+export function getVisiblePages(pageCount: number, currentPage: number, delta = 1) {
+  if (pageCount < 1 || currentPage < 1 || currentPage > pageCount) {
+    throw new Error("Invalid pageCount or currentPage");
+  }
+
   const range = [];
 
   for (

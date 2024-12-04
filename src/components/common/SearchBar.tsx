@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const StyledSearchBar = styled.div`
   display: flex;
+  width: 100%;
   max-width: 400px;
   gap: 0.5rem;
 
@@ -29,6 +30,7 @@ export default function SearchBar({
         placeholder="Movie name..."
         value={searchText}
         onChange={(e) => onSearchTextChange(e.target.value)}
+        autoFocus
       />
       {/* <Button>Search</Button> */}
     </StyledSearchBar>

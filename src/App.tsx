@@ -29,15 +29,25 @@ const AppContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  padding: 2rem;
+  padding: 1rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 `;
 
 const ResultsContainer = styled.div`
-  margin: 4rem 0 0;
+  margin: 2rem 0 0;
   position: relative;
+`;
+
+const ResultsCount = styled.div`
+  text-align: center;
+  font-size: 1.25rem;
+`;
+
+const ErrorMessage = styled.div`
+  text-align: center;
+  font-size: 1.25rem;
 `;
 
 const itemsPerPage = 10;
@@ -69,28 +79,31 @@ function App() {
     [movies],
   );
 
-  const memoizedPaginator = useMemo(
-    () => (
+  const memoizedPaginator = useMemo(() => {
+    if (totalResults === 0 || totalResults <= itemsPerPage) {
+      return null;
+    }
+    return (
       <Paginator
         totalCount={totalResults}
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />
-    ),
-    [totalResults, currentPage],
-  );
+    );
+  }, [totalResults, currentPage]);
 
   return (
     <>
       <AppContainer>
-        <Header />
-        <MainContent>
+        <Header>
           <SearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
+        </Header>
+        <MainContent>
           {/* {selectedMovieId && <MovieDetail movie={mockMovies[0]} />} */}
           <ResultsContainer>
             {error.length > 0 && searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
-              <h2>{error}</h2>
+              <ErrorMessage>{error}</ErrorMessage>
             )}
 
             {searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
@@ -102,6 +115,8 @@ function App() {
                 )}
                 {movies?.length > 0 && (
                   <>
+                    <ResultsCount>{totalResults} results</ResultsCount>
+                    {memoizedPaginator}
                     <MovieList count={totalResults} loading={loading}>
                       {movieItems}
                     </MovieList>
