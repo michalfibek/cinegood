@@ -9,6 +9,7 @@ const StyledSearchBar = styled.div`
   gap: 0.5rem;
 
   input {
+    font-size: 1.25rem;
     flex: 1;
   }
 `;
