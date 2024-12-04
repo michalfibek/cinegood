@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 // basic layout
@@ -71,35 +71,21 @@ function App() {
   function handleSearchTextChange(text: string) {
     setSearchText(text);
     setCurrentPage(1);
-    setSearchParams({ q: text });
   }
 
-  function handlePageChange(pageNumber: number) {
-    setCurrentPage(pageNumber);
-    if (pageNumber == 1) {
-      setSearchParams({ q: searchText });
+  useEffect(() => {
+    if (debouncedSearchText.trim() === "") {
+      setSearchParams({});
+    } else if (currentPage === 1) {
+      setSearchParams({ q: debouncedSearchText });
     } else {
-      setSearchParams({ q: searchText, p: pageNumber.toString() });
+      setSearchParams({ q: debouncedSearchText, p: currentPage.toString() });
     }
-  }
+  }, [debouncedSearchText, currentPage, setSearchParams]);
 
-  // useEffect(() => {
-  //   const textParam = searchParams.get("q");
-  //   const pageParam = searchParams.get("p");
-  //   if (textParam !== null && textParam !== searchText) {
-  //     setSearchText(textParam);
-  //   }
-
-  //   const pageNumber = pageParam !== null ? parseInt(pageParam) : 1;
-
-  //   if (pageNumber !== currentPage) {
-  //     setCurrentPage(pageNumber);
-  //   }
-  // }, []);
-
-  // function handleMovieSelect(movieId: string) {
-  //   setSelectedMovieId(movieId);
-  // }
+  const handlePageChange = useCallback((pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  }, []);
 
   const movieItems = useMemo(
     () => movies.map((movie) => <MovieItem key={movie.imdbID} movie={movie} />),
@@ -118,7 +104,7 @@ function App() {
         onPageChange={handlePageChange}
       />
     );
-  }, [totalResults, currentPage]);
+  }, [totalResults, currentPage, handlePageChange]);
 
   if (import.meta.env.VITE_OMDB_API_KEY === undefined) {
     return (
