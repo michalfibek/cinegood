@@ -18,7 +18,7 @@ const HeaderContainer = styled.div`
   align-items: center;
 `;
 
-const Logo = styled.div`
+const Logo = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -59,7 +59,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
   return (
     <StyledHeader>
       <HeaderContainer>
-        <Logo>
+        <Logo href="/">
           <StyledIconFilm size={46} />
           <h1>Cinegood</h1>
         </Logo>
