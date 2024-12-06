@@ -20,7 +20,7 @@ html {
   font-weight: 300;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255);
   background-color: #242424;
 
   font-synthesis: none;

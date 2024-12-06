@@ -11,7 +11,7 @@ const Container = styled.article`
   margin: 0 auto;
   padding: 1.5rem 1.5rem;
   border-radius: 1rem;
-  background: #3a3a3a;
+  background: #304242;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -84,6 +84,7 @@ const Section = styled.div`
 `;
 
 const MainTitle = styled.h1`
+  color: #e6fffd;
   font-size: 1.5rem;
   margin: 0 0 0.5rem;
 `;
@@ -113,7 +114,7 @@ const SectionTitle = styled.h3`
 `;
 
 const WebsiteLink = styled.a`
-  color: #3498db;
+  color: #e6fffd;
   text-decoration: none;
   &:hover {
     text-decoration: underline;

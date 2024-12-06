@@ -1,4 +1,4 @@
-// import { useCallback, useEffect, useMemo, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router";
 
@@ -14,6 +14,7 @@ import Overlay from "./components/common/Overlay";
 import Loader from "./components/common/Loader";
 import ErrorMessage from "./components/common/ErrorMessage";
 import Button from "./components/common/Button";
+import PageTitle from "./components/common/PageTitle";
 
 // movie related
 import MovieDetail from "./components/movie/MovieDetail";
@@ -30,12 +31,18 @@ export default function Movie() {
   const { id } = useParams();
   const { movie, loading, error } = useFetchMovie(id || null);
 
+  function handleNavigateBack(evt: React.MouseEvent) {
+    evt.preventDefault();
+    navigate(-1);
+  }
+
   return (
     <>
+      <PageTitle title={movie?.title ?? "Movie detail"} />
       <Header />
       <MainContent>
         <Nav>
-          <Button onClick={() => navigate(-1)}>
+          <Button to={"/"} onClick={handleNavigateBack}>
             <ChevronLeftIcon size={24} /> Back to search
           </Button>
         </Nav>

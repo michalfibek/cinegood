@@ -17,11 +17,11 @@ import Overlay from "./components/common/Overlay";
 import Paginator from "./components/common/Paginator";
 import SearchBar from "./components/common/SearchBar";
 import ErrorMessage from "./components/common/ErrorMessage";
+import PageTitle from "./components/common/PageTitle";
 
 // movie related
 import MovieItem from "./components/movie/MovieItem";
 import MovieList from "./components/movie/MovieList";
-// import MovieDetail from "./components/movie/MovieDetail";
 
 const ResultsContainer = styled.div`
   margin: 2rem 0 0;
@@ -76,6 +76,8 @@ export default function Home() {
     [movies],
   );
 
+  const pageTitle = debouncedSearchText.trim() === "" ? "" : `searching '${debouncedSearchText}'`;
+
   const memoizedPaginator = useMemo(() => {
     if (totalResults === 0 || totalResults <= itemsPerPage) {
       return null;
@@ -92,6 +94,7 @@ export default function Home() {
 
   return (
     <>
+      <PageTitle title={pageTitle} />
       <Header>
         <SearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
       </Header>

@@ -40,6 +40,7 @@ const MovieHeader = styled.div`
 
 const MovieTitle = styled.h3`
   margin: 0 0 0.5rem;
+  color: #e6fffd;
 `;
 
 const FallbackImg = styled.div`
