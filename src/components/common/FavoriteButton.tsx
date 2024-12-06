@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useLocalStorageState } from "../../hooks/useLocalStorage";
 import { TBasicMovie } from "../../types/TBasicMovie";
 import Button from "./Button";
 import { Star as StarIcon } from "@styled-icons/heroicons-solid";
 import { TMovie } from "../../types/TMovie";
+import { useFavoriteMovies } from "../../hooks/useFavoriteMovies";
 
 const FavoriteButtonElm = styled(Button)`
   background: none;
@@ -27,23 +27,14 @@ const FavoriteButtonElm = styled(Button)`
 `;
 
 export default function FavoriteButton({ movie }: { movie: TBasicMovie | TMovie }) {
-  const [favorites, setFavorites] = useLocalStorageState<TBasicMovie[]>([], "favorites");
-  const isFavorite = favorites.find((prevMov) => prevMov.imdbID == movie.imdbID);
+  const { checkFavorite, addFavorite, removeFavorite } = useFavoriteMovies();
+  const isFavorite = checkFavorite(movie.imdbID);
 
   const handleSwitchFavorite = () => {
     if (isFavorite) {
-      setFavorites((prevFavorites) =>
-        prevFavorites.filter((prevMov) => prevMov.imdbID !== movie.imdbID),
-      );
+      removeFavorite(movie.imdbID);
     } else {
-      const movieBasicData = {
-        imdbID: movie.imdbID,
-        title: movie.title,
-        year: movie.year,
-        poster: movie.poster,
-        type: movie.type,
-      } as TBasicMovie;
-      setFavorites((prevFavorites) => [...prevFavorites, movieBasicData]);
+      addFavorite(movie);
     }
   };
 

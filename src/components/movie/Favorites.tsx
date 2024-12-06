@@ -1,11 +1,10 @@
 import { useMemo } from "react";
-import { useLocalStorageState } from "../../hooks/useLocalStorage";
-import { TBasicMovie } from "../../types/TBasicMovie";
 import MovieList from "./MovieList";
 import MovieItem from "./MovieItem";
+import { useFavoriteMovies } from "../../hooks/useFavoriteMovies";
 
 export default function Favorites() {
-  const [favorites] = useLocalStorageState<TBasicMovie[]>([], "favorites");
+  const { favorites } = useFavoriteMovies();
 
   const movieItems = useMemo(
     () => favorites.map((movie) => <MovieItem key={movie.imdbID} movie={movie} />),

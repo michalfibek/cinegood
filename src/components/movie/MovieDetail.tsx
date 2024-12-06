@@ -1,7 +1,6 @@
 import { TMovie } from "../../types/TMovie";
 import styled from "styled-components";
 import MovieRecord from "./elements/MovieRecord";
-import { useLocalStorageState } from "../../hooks/useLocalStorage";
 import FavoriteButton from "../common/FavoriteButton";
 
 const Container = styled.article`

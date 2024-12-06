@@ -78,6 +78,7 @@ const MovieYear = styled.time``;
 export default function MovieItem({ movie }: { movie: TBasicMovie }) {
   return (
     <StyledMovieItem>
+      {/* <FavoriteButton movie={movie} /> */}
       <Link to={`/movie/${movie.imdbID}`}>
         <ImageContainer>
           <Img src={movie.poster} alt={movie.title} fallback={<FallbackImg />} />
