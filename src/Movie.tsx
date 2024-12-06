@@ -38,7 +38,7 @@ export default function Movie() {
 
   return (
     <>
-      <PageTitle title={movie?.title ?? "Movie detail"} />
+      <PageTitle title={movie?.title ?? ""} />
       <Header />
       <MainContent>
         <Nav>

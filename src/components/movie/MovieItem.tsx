@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Img } from "../common/Img";
 import { Link } from "react-router";
 import { TBasicMovie } from "../../types/TBasicMovie";
+import FavoriteButton from "../common/FavoriteButton";
 
 const StyledMovieItem = styled.div`
   line-height: 1.2;

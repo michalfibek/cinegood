@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router";
 
 // hooks
 import { useSearchMovies } from "./hooks/useSearchMovies";
-import useDebounce from "./hooks/useDebounce";
+import { useDebounce } from "./hooks/useDebounce";
 
 import styled from "styled-components";
 
@@ -22,6 +22,7 @@ import PageTitle from "./components/common/PageTitle";
 // movie related
 import MovieItem from "./components/movie/MovieItem";
 import MovieList from "./components/movie/MovieList";
+import Favorites from "./components/movie/Favorites";
 
 const ResultsContainer = styled.div`
   margin: 2rem 0 0;
@@ -46,6 +47,8 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(initialPage);
 
   const debouncedSearchText = useDebounce(searchText, 500);
+
+  const searchActive = searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH;
 
   const { movies, totalResults, error, loading } = useSearchMovies(
     debouncedSearchText,
@@ -100,11 +103,9 @@ export default function Home() {
       </Header>
       <MainContent>
         <ResultsContainer>
-          {error.length > 0 && searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
-            <ErrorMessage>{error}</ErrorMessage>
-          )}
+          {error.length > 0 && searchActive && <ErrorMessage>{error}</ErrorMessage>}
 
-          {searchText.length >= import.meta.env.VITE_MIN_SEARCH_LENGTH && (
+          {searchActive && (
             <>
               {loading && !error.length && (
                 <Overlay>
@@ -122,6 +123,7 @@ export default function Home() {
             </>
           )}
         </ResultsContainer>
+        {!searchActive && <Favorites />}
       </MainContent>
     </>
   );

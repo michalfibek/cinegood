@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import styled from "styled-components";
 
-type ButtonProps = {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   href?: string;
   to?: string;

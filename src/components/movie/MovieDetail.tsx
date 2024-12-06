@@ -1,7 +1,8 @@
 import { TMovie } from "../../types/TMovie";
 import styled from "styled-components";
-import { Star as StarIcon } from "@styled-icons/heroicons-solid";
 import MovieRecord from "./elements/MovieRecord";
+import { useLocalStorageState } from "../../hooks/useLocalStorage";
+import FavoriteButton from "../common/FavoriteButton";
 
 const Container = styled.article`
   display: flex;
@@ -34,20 +35,6 @@ const PosterContainer = styled.div`
     flex: 1 1 100%;
     max-width: 100%;
     order: 1;
-  }
-`;
-
-const FavoriteButton = styled.button`
-  background: none;
-  border: none;
-  color: #fff;
-  align-self: flex-start;
-  cursor: pointer;
-
-  &:hover,
-  &:focus,
-  &:active {
-    color: #f39c12;
   }
 `;
 
@@ -136,9 +123,7 @@ export default function MovieDetail({ movie }: { movie: TMovie }) {
               <MovieYear dateTime={movie.year.toString()}>{movie.year}</MovieYear>
             </MovieMeta>
           </div>
-          <FavoriteButton>
-            <StarIcon size={32} />
-          </FavoriteButton>
+          <FavoriteButton movie={movie} />
         </Header>
 
         <Section>
