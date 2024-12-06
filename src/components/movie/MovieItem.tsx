@@ -2,9 +2,13 @@ import styled from "styled-components";
 import { Img } from "../common/Img";
 import { Link } from "react-router";
 import { TBasicMovie } from "../../types/TBasicMovie";
+import FavoriteButton from "../common/FavoriteButton";
 
 const StyledMovieItem = styled.div`
   line-height: 1.2;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
 
   img {
     border-radius: 0.25rem;
@@ -18,20 +22,23 @@ const StyledMovieItem = styled.div`
     display: flex;
     border-radius: 0.5rem;
     padding: 0.25rem 0.25rem 0.25rem 0;
+  }
 
-    &:hover,
-    &:focus,
-    &:active {
-      background: #1b1b1b;
-      img {
-        transform: scale(1.2);
-      }
+  &:hover,
+  &:focus,
+  &:active {
+    background: #1b1b1b;
+    img {
+      transform: scale(1.2);
     }
   }
 `;
 
+const FavoriteButtonContainer = styled.div``;
+
 const MovieHeader = styled.div`
   margin-left: 1rem;
+  flex-grow: 1;
 
   a {
     margin: 0;
@@ -81,14 +88,19 @@ export default function MovieItem({ movie }: { movie: TBasicMovie }) {
         <ImageContainer>
           <Img src={movie.poster} alt={movie.title} fallback={<FallbackImg />} />
         </ImageContainer>
-        <MovieHeader>
-          <MovieTitle>{movie.title}</MovieTitle>
-          <MovieMeta>
-            {movie.type && <MovieType>{movie.type}</MovieType>}
-            <MovieYear dateTime={movie.year.toString()}>{movie.year}</MovieYear>
-          </MovieMeta>
-        </MovieHeader>
       </Link>
+      <MovieHeader>
+        <Link to={`/movie/${movie.imdbID}`}>
+          <MovieTitle>{movie.title}</MovieTitle>
+        </Link>
+        <MovieMeta>
+          {movie.type && <MovieType>{movie.type}</MovieType>}
+          <MovieYear dateTime={movie.year.toString()}>{movie.year}</MovieYear>
+        </MovieMeta>
+      </MovieHeader>
+      <FavoriteButtonContainer>
+        <FavoriteButton movie={movie} />
+      </FavoriteButtonContainer>
     </StyledMovieItem>
   );
 }

@@ -4,6 +4,9 @@ import { Route, Routes } from "react-router";
 // basic layout
 import Footer from "./components/layout/Footer";
 
+// context provider
+import { FavoritesProvider } from "./providers/FavoritesProvider";
+
 // main routed components
 import Home from "./Home";
 import Movie from "./Movie";
@@ -28,11 +31,13 @@ function App() {
   return (
     <>
       <AppContainer>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="movie/:id" element={<Movie />} />
-        </Routes>
-        <Footer />
+        <FavoritesProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="movie/:id" element={<Movie />} />
+          </Routes>
+          <Footer />
+        </FavoritesProvider>
       </AppContainer>
     </>
   );
