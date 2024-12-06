@@ -1,3 +1,5 @@
+import { TRating } from "./TRating";
+
 export type TMovieRaw = {
   Actors: string;
   Awards: string;
@@ -15,7 +17,7 @@ export type TMovieRaw = {
   Poster: string;
   Production: string;
   Rated: string;
-  Ratings: string;
+  Ratings: TRating[];
   Released: string;
   Response: string;
   Runtime: string;
