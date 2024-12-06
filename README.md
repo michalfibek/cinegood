@@ -2,7 +2,7 @@
 
 Your personal movie database using OMDb API.
 
-Build using React and React Router.
+Built with React and React Router.
 
 ## Instructions
 
