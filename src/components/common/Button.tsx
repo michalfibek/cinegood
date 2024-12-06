@@ -22,6 +22,7 @@ const StyledButton = styled.button<ButtonProps>`
   font-size: 1em;
   font-weight: 600;
   align-items: center;
+  font-family: inherit;
 
   svg {
     margin-right: 0.5rem;

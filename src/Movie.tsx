@@ -1,18 +1,22 @@
 // import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import { useNavigate, useParams } from "react-router";
+
+// hooks
+import { useFetchMovie } from "./hooks/useFetchMovie";
 
 // layout
 import Header from "./components/layout/Header";
 import MainContent from "./components/layout/MainContent";
 
-// movie related
-import MovieDetail from "./components/movie/MovieDetail";
-import { useFetchMovie } from "./hooks/useFetchMovie";
-import { useNavigate, useParams } from "react-router";
+// common
 import Overlay from "./components/common/Overlay";
 import Loader from "./components/common/Loader";
 import ErrorMessage from "./components/common/ErrorMessage";
 import Button from "./components/common/Button";
+
+// movie related
+import MovieDetail from "./components/movie/MovieDetail";
 
 import { ChevronLeft as ChevronLeftIcon } from "@styled-icons/heroicons-solid";
 

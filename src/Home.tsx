@@ -1,26 +1,27 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router";
+
+// hooks
+import { useSearchMovies } from "./hooks/useSearchMovies";
+import useDebounce from "./hooks/useDebounce";
+
 import styled from "styled-components";
 
 // basic layout
 import Header from "./components/layout/Header";
+import MainContent from "./components/layout/MainContent";
 
 // common
 import Loader from "./components/common/Loader";
 import Overlay from "./components/common/Overlay";
 import Paginator from "./components/common/Paginator";
 import SearchBar from "./components/common/SearchBar";
+import ErrorMessage from "./components/common/ErrorMessage";
 
 // movie related
 import MovieItem from "./components/movie/MovieItem";
 import MovieList from "./components/movie/MovieList";
 // import MovieDetail from "./components/movie/MovieDetail";
-
-// hooks
-import { useSearchMovies } from "./hooks/useSearchMovies";
-import useDebounce from "./hooks/useDebounce";
-import MainContent from "./components/layout/MainContent";
-import ErrorMessage from "./components/common/ErrorMessage";
-import { useSearchParams } from "react-router";
 
 const ResultsContainer = styled.div`
   margin: 2rem 0 0;

@@ -1,8 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
-import { createGlobalStyle } from "styled-components";
 import { BrowserRouter } from "react-router";
+import { createGlobalStyle } from "styled-components";
+
+// components
+import App from "./App.tsx";
 
 export const GlobalStyle = createGlobalStyle`
 html {
