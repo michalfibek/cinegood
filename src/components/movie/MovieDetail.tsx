@@ -2,6 +2,7 @@ import { TMovie } from "../../types/TMovie";
 import styled from "styled-components";
 import MovieRecord from "./elements/MovieRecord";
 import FavoriteButton from "../common/FavoriteButton";
+import { Link } from "react-router";
 
 const Container = styled.article`
   display: flex;
@@ -73,6 +74,10 @@ const MainTitle = styled.h1`
   color: #e6fffd;
   font-size: 1.5rem;
   margin: 0 0 0.5rem;
+
+  a {
+    color: inherit;
+  }
 `;
 
 const MovieMeta = styled.div`
@@ -116,7 +121,9 @@ export default function MovieDetail({ movie }: { movie: TMovie }) {
       <MainInfo>
         <Header>
           <div>
-            <MainTitle>{movie.title}</MainTitle>
+            <MainTitle>
+              <Link to={`/movie/${movie.imdbID}`}>{movie.title}</Link>
+            </MainTitle>
             <MovieMeta>
               {movie.type && <MovieType>{movie.type}</MovieType>}
               <MovieYear dateTime={movie.year.toString()}>{movie.year}</MovieYear>

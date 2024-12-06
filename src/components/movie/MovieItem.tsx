@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { Img } from "../common/Img";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { TBasicMovie } from "../../types/TBasicMovie";
 import FavoriteButton from "../common/FavoriteButton";
 
 const StyledMovieItem = styled.div`
-  line-height: 1.2;
   display: flex;
+  line-height: 1.2;
   align-items: center;
   border-radius: 0.5rem;
 
@@ -34,7 +34,9 @@ const StyledMovieItem = styled.div`
   }
 `;
 
-const FavoriteButtonContainer = styled.div``;
+const FavoriteButtonContainer = styled.div`
+  margin: 0.5rem;
+`;
 
 const MovieHeader = styled.div`
   margin-left: 1rem;
@@ -82,15 +84,17 @@ const MovieType = styled.span`
 const MovieYear = styled.time``;
 
 export default function MovieItem({ movie }: { movie: TBasicMovie }) {
+  const { search } = useLocation();
+
   return (
     <StyledMovieItem>
-      <Link to={`/movie/${movie.imdbID}`}>
+      <Link to={`/movie/${movie.imdbID}${search}`}>
         <ImageContainer>
           <Img src={movie.poster} alt={movie.title} fallback={<FallbackImg />} />
         </ImageContainer>
       </Link>
       <MovieHeader>
-        <Link to={`/movie/${movie.imdbID}`}>
+        <Link to={`/movie/${movie.imdbID}${search}`}>
           <MovieTitle>{movie.title}</MovieTitle>
         </Link>
         <MovieMeta>

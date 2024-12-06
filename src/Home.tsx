@@ -61,14 +61,28 @@ export default function Home() {
   }
 
   useEffect(() => {
+    const currentParams = Object.fromEntries(searchParams.entries());
+    let newParams;
+
     if (debouncedSearchText.trim() === "") {
-      setSearchParams({});
+      newParams = {};
     } else if (currentPage === 1) {
-      setSearchParams({ q: debouncedSearchText });
+      newParams = { q: debouncedSearchText };
     } else {
-      setSearchParams({ q: debouncedSearchText, p: currentPage.toString() });
+      newParams = { q: debouncedSearchText, p: currentPage.toString() };
     }
-  }, [debouncedSearchText, currentPage, setSearchParams]);
+
+    const differentParams =
+      Object.keys(newParams).length !== Object.keys(currentParams).length ||
+      Object.keys(newParams).some(
+        (key) =>
+          (newParams as Record<string, string>)[key] !==
+          (currentParams as Record<string, string>)[key],
+      );
+    if (differentParams) {
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [debouncedSearchText, currentPage, searchParams, setSearchParams]);
 
   const handlePageChange = useCallback((pageNumber: number) => {
     setCurrentPage(pageNumber);

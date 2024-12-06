@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 
 // hooks
 import { useFetchMovie } from "./hooks/useFetchMovie";
@@ -27,14 +27,9 @@ const Nav = styled.nav`
 `;
 
 export default function Movie() {
-  const navigate = useNavigate();
+  const { search } = useLocation();
   const { id } = useParams();
   const { movie, loading, error } = useFetchMovie(id || null);
-
-  function handleNavigateBack(evt: React.MouseEvent) {
-    evt.preventDefault();
-    navigate(-1);
-  }
 
   return (
     <>
@@ -42,8 +37,9 @@ export default function Movie() {
       <Header />
       <MainContent>
         <Nav>
-          <Button to={"/"} onClick={handleNavigateBack}>
-            <ChevronLeftIcon size={24} /> Back to search
+          <Button to={`/${search}`}>
+            <ChevronLeftIcon size={24} />
+            {search ? `Back to search` : `Back to homepage`}
           </Button>
         </Nav>
         {error.length > 0 && <ErrorMessage>{error}</ErrorMessage>}
